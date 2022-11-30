@@ -6,11 +6,10 @@ using System.Threading.Tasks;
 
 namespace TrabalhoVotacao.Models.Eleicoes
 {
-    public class EleicaoExecutivo
+    public class Eleicoes
     {
-        public EleicaoExecutivo()
-        {
+        public Eleicoes() { }
 
-        }
+        public Guid EleicaoId { get; set; }
     }
 }

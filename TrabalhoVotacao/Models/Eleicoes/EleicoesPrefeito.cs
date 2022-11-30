@@ -6,11 +6,8 @@ using System.Threading.Tasks;
 
 namespace TrabalhoVotacao.Models.Eleicoes
 {
-    public class EleicaoLegislativo
+    public class EleicoesPrefeito : Eleicoes
     {
-        public EleicaoLegislativo()
-        {
-
-        }
+        public EleicoesPrefeito() { EleicaoId = Guid.NewGuid(); }
     }
 }
