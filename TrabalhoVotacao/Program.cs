@@ -90,7 +90,7 @@ void ModuloLegislativo()
     Console.WriteLine("Modulo legislativo");
     var opcao = Console.ReadLine();
     switch (opcao)
-    {//sad
+    {
         case "1":
             Console.WriteLine("Eleições para Vereador");
             break;
