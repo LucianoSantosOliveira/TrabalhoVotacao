@@ -144,8 +144,8 @@ void EleicoesPrefeito()
     {
         case "1":
             InstrucoesArquivoTxt();
-            LerArquivoTxt();
-            EleicoesPrefeito();
+            LerArquivoTxtPrefeito();
+            main(null);
             break;
         default:
             main("Selecione uma opção válida");
@@ -153,7 +153,7 @@ void EleicoesPrefeito()
     }
 }
 
-void LerArquivoTxt()
+void LerArquivoTxtPrefeito()
 {
     var path = System.AppDomain.CurrentDomain.BaseDirectory.ToString();
      path += @"\eleicao.txt";
@@ -205,6 +205,8 @@ void CalcularResultadoEleicaoPrefeito()
         Console.WriteLine($"Candidato: {prefeitos.nome}, PORCENTAGEM DE VOTOS: {prefeitos.PorcentagemDeVotos}%, QUANTIDADE DE VOTOS: {prefeitos.QuantidadeDeVotos}");
         linhaHorizontal(100);
     }
+    Console.WriteLine("Aperte qualquer tecla para continuar");
+    Console.ReadKey();
 }
 
 void linhaHorizontal(int tamanho) { for (var i = 0; i <= tamanho; i++) { Console.Write("_"); } Console.WriteLine("\n"); }
