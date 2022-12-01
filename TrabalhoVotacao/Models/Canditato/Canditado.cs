@@ -13,6 +13,7 @@ namespace TrabalhoVotacao.Models.Canditato
         public string nome { get; set; }
         public int QuantidadeDeVotos { get; set; }
         public string Partido { get; set; }
+        public decimal PorcentagemDeVotos { get; set; }
     }
 
 }

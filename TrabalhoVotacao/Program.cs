@@ -1,4 +1,5 @@
-﻿using TrabalhoVotacao;
+﻿using System.Reflection;
+using TrabalhoVotacao;
 using TrabalhoVotacao.Models.Canditato;
 using TrabalhoVotacao.Models.Eleicoes;
 using TrabalhoVotacao.Models.Partido;
@@ -98,25 +99,111 @@ void ModuloLegislativo()
             main("Selecione uma opção válida");
             break;
     }
-    Console.ReadLine();
 };
 
 void ModuloExecutivo()
 {
     Console.Clear();
-    Console.WriteLine("Modulo legislativo");
+    Console.WriteLine("Modulo Executivo");
+    linhaHorizontal(50);
+    Console.WriteLine("1 - Eleições para Prefeito");
     var opcao = Console.ReadLine();
     switch (opcao)
     {
         case "1":
-            Console.WriteLine("Eleições para Prefeito");
+            EleicoesPrefeito();
             break;
         default:
             main("Selecione uma opção válida");
             break;
     }
-    Console.ReadLine();
 };
+
+void InstrucoesArquivoTxt()
+{
+    Console.Clear();
+    Console.ForegroundColor= ConsoleColor.Green;
+    Console.WriteLine("Os dados devem ser sepadaros por ';'.\n " +
+                      "serão 2 parametros: nome do candidato; quantidadeDevotosValidos \n" +
+                      "o nome do candidato deve ser igual ao cadastrado.\n" +
+                      "Criar arquivo dentro de bin/debug/net6/arquivo.txt com o nome eleicao");
+    Console.ResetColor();
+}
+
+void EleicoesPrefeito()
+{
+    Console.Clear();
+    if(fakeDataBase.prefeitos.Count() == 0)
+        main("Deve conter candidatos cadastrados.");
+    cabecalho("Eleição para prefeito", 50);
+    Console.WriteLine("1 - Importar votos por arquivo .txt");
+    var opcao = Console.ReadLine();
+    switch (opcao)
+    {
+        case "1":
+            InstrucoesArquivoTxt();
+            LerArquivoTxt();
+            EleicoesPrefeito();
+            break;
+        default:
+            main("Selecione uma opção válida");
+            break;
+    }
+}
+
+void LerArquivoTxt()
+{
+    var path = System.AppDomain.CurrentDomain.BaseDirectory.ToString();
+     path += @"\eleicao.txt";
+    try
+    {
+        using (StreamReader sr = new StreamReader(path))
+        {
+            String linha;
+            while ((linha = sr.ReadLine()) != null)
+            {
+                var candidato = linha.Split(';');
+                var nome = candidato[0];
+                var votos = candidato[1];
+
+                var prefeito = fakeDataBase.prefeitos.First(p => p.nome == nome);
+                fakeDataBase.prefeitos[fakeDataBase.prefeitos.IndexOf(prefeito)].QuantidadeDeVotos = Int32.Parse(votos);
+            }
+        }
+        CalcularResultadoEleicaoPrefeito();
+    }
+    catch
+    {
+        main("Arquivo inválido ou parametro de candidato está incorreto");
+    }
+}
+
+void CalcularResultadoEleicaoPrefeito()
+{
+    var totalDevotos = fakeDataBase.prefeitos.Select(p => p.QuantidadeDeVotos).Sum();
+
+    var votosValidos = fakeDataBase.prefeitos.Where(p => p.QuantidadeDeVotos > 0)
+                                             .Select(x => x.QuantidadeDeVotos).Sum();
+
+    foreach (var prefeito in fakeDataBase.prefeitos)
+    {
+        if(prefeito.QuantidadeDeVotos > 0)
+        {
+            prefeito.PorcentagemDeVotos = prefeito.QuantidadeDeVotos * 100 / votosValidos; 
+        }
+    }
+
+    var prefeitosOrdenadosPorVotos = fakeDataBase.prefeitos.OrderByDescending(p => p.PorcentagemDeVotos);
+
+    Console.Clear();
+    cabecalho("Resultado da eleição para prefeito", 50);
+
+    foreach(var prefeitos in prefeitosOrdenadosPorVotos)
+    {
+        Console.WriteLine($"Candidato: {prefeitos.nome}, PORCENTAGEM DE VOTOS: {prefeitos.PorcentagemDeVotos}%, QUANTIDADE DE VOTOS: {prefeitos.QuantidadeDeVotos}");
+        linhaHorizontal(100);
+    }
+}
 
 void linhaHorizontal(int tamanho) { for (var i = 0; i <= tamanho; i++) { Console.Write("_"); } Console.WriteLine("\n"); }
 
@@ -163,7 +250,6 @@ void CadastrarCandidato()
 
     main(null);
 }
-
 
 void CadatrarVereador()
 {
