@@ -126,7 +126,9 @@ void InstrucoesArquivoTxt()
     Console.WriteLine("Os dados devem ser sepadaros por ';'.\n " +
                       "serão 2 parametros: nome do candidato; quantidadeDevotosValidos \n" +
                       "o nome do candidato deve ser igual ao cadastrado.\n" +
-                      "Criar arquivo dentro de bin/debug/net6/arquivo.txt com o nome eleicao");
+                      "Criar arquivo dentro de bin/debug/net6/arquivo.txt com o nome eleicao.\n" +
+                      "Aperte qualquer tecla para continuar");
+    Console.ReadLine();
     Console.ResetColor();
 }
 
