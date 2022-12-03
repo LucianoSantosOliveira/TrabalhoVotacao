@@ -123,6 +123,12 @@ void ModuloExecutivo()
         case "1":
             EleicoesPrefeito();
             break;
+        case "2":
+            EleicoesPresidente();
+            break;
+        case "3":
+            EleicoesGovernador();
+            break;
         default:
             main("Selecione uma opção válida");
             break;
@@ -140,6 +146,160 @@ void InstrucoesArquivoTxt()
                       "Aperte qualquer tecla para continuar");
     Console.ReadLine();
     Console.ResetColor();
+}
+
+void EleicoesGovernador()
+{
+    Console.Clear();
+    if (fakeDataBase.presidentes.Count() == 0)
+        main("Deve conter candidatos cadastrados.");
+    cabecalho("Eleição para prefeito", 50);
+    Console.WriteLine("1 - Importar votos por arquivo .txt");
+    var opcao = Console.ReadLine();
+    switch (opcao)
+    {
+        case "1":
+            InstrucoesArquivoTxt();
+            LerArquivoTxtGovernador();
+            main(null);
+            break;
+        default:
+            main("Selecione uma opção válida");
+            break;
+    }
+}
+
+void LerArquivoTxtGovernador()
+{
+    var path = System.AppDomain.CurrentDomain.BaseDirectory.ToString();
+    path += @"\eleicao.txt";
+    try
+    {
+        using (StreamReader sr = new StreamReader(path))
+        {
+            String linha;
+            while ((linha = sr.ReadLine()) != null)
+            {
+                var candidato = linha.Split(';');
+                var nome = candidato[0];
+                var votos = candidato[1];
+
+                var governador = fakeDataBase.governadores.First(p => p.nome == nome);
+                fakeDataBase.governadores[fakeDataBase.governadores.IndexOf(governador)].QuantidadeDeVotos = Int32.Parse(votos);
+            }
+        }
+        CalcularResultadoGovernador();
+    }
+    catch
+    {
+        main("Arquivo inválido ou parametro de candidato está incorreto");
+    }
+}
+
+void CalcularResultadoGovernador()
+{
+    var totalDevotos = fakeDataBase.governadores.Select(p => p.QuantidadeDeVotos).Sum();
+
+    var votosValidos = fakeDataBase.governadores.Where(p => p.QuantidadeDeVotos > 0)
+                                             .Select(x => x.QuantidadeDeVotos).Sum();
+
+    foreach (var prefeito in fakeDataBase.governadores)
+    {
+        if (prefeito.QuantidadeDeVotos > 0)
+        {
+            prefeito.PorcentagemDeVotos = prefeito.QuantidadeDeVotos * 100 / votosValidos;
+        }
+    }
+
+    var prefeitosOrdenadosPorVotos = fakeDataBase.governadores.OrderByDescending(p => p.PorcentagemDeVotos);
+
+    Console.Clear();
+    cabecalho("Resultado da eleição para prefeito", 50);
+
+    foreach (var prefeitos in prefeitosOrdenadosPorVotos)
+    {
+        Console.WriteLine($"Candidato: {prefeitos.nome}, PORCENTAGEM DE VOTOS: {prefeitos.PorcentagemDeVotos}%, QUANTIDADE DE VOTOS: {prefeitos.QuantidadeDeVotos}");
+        linhaHorizontal(100);
+    }
+    Console.WriteLine("Aperte qualquer tecla para continuar");
+    Console.ReadKey();
+}
+
+void EleicoesPresidente()
+{
+    Console.Clear();
+    if (fakeDataBase.presidentes.Count() == 0)
+        main("Deve conter candidatos cadastrados.");
+    cabecalho("Eleição para prefeito", 50);
+    Console.WriteLine("1 - Importar votos por arquivo .txt");
+    var opcao = Console.ReadLine();
+    switch (opcao)
+    {
+        case "1":
+            InstrucoesArquivoTxt();
+            LerArquivoTxtPresidente();
+            main(null);
+            break;
+        default:
+            main("Selecione uma opção válida");
+            break;
+    }
+}
+
+void LerArquivoTxtPresidente()
+{
+    var path = System.AppDomain.CurrentDomain.BaseDirectory.ToString();
+    path += @"\eleicao.txt";
+    try
+    {
+        using (StreamReader sr = new StreamReader(path))
+        {
+            String linha;
+            while ((linha = sr.ReadLine()) != null)
+            {
+                var candidato = linha.Split(';');
+                var nome = candidato[0];
+                var votos = candidato[1];
+
+                var presidente = fakeDataBase.presidentes.First(p => p.nome == nome);
+                fakeDataBase.presidentes[fakeDataBase.presidentes.IndexOf(presidente)].QuantidadeDeVotos = Int32.Parse(votos);
+            }
+        }
+        CalcularResultadoPresidente();
+    }
+    catch
+    {
+        main("Arquivo inválido ou parametro de candidato está incorreto");
+    }
+}
+
+void CalcularResultadoPresidente()
+{
+    var totalDevotos = fakeDataBase.presidentes.Select(p => p.QuantidadeDeVotos).Sum();
+
+    var votosValidos = fakeDataBase.presidentes.Where(p => p.QuantidadeDeVotos > 0)
+                                             .Select(x => x.QuantidadeDeVotos).Sum();
+
+    foreach (var prefeito in fakeDataBase.presidentes)
+    {
+        if (prefeito.QuantidadeDeVotos > 0)
+        {
+            prefeito.PorcentagemDeVotos = prefeito.QuantidadeDeVotos * 100 / votosValidos;
+        }
+    }
+
+    var prefeitosOrdenadosPorVotos = fakeDataBase.presidentes.OrderByDescending(p => p.PorcentagemDeVotos);
+
+    Console.Clear();
+    cabecalho("Resultado da eleição para prefeito", 50);
+
+    foreach (var prefeitos in prefeitosOrdenadosPorVotos)
+    {
+        Console.WriteLine($"Candidato: {prefeitos.nome}, PORCENTAGEM DE VOTOS: {prefeitos.PorcentagemDeVotos}%, QUANTIDADE DE VOTOS: {prefeitos.QuantidadeDeVotos}");
+        linhaHorizontal(100);
+    }
+    Console.WriteLine("Aperte qualquer tecla para continuar");
+    Console.ReadKey();
 }
 
 void EleicoesPrefeito()
@@ -587,8 +747,6 @@ void CalcularResultadoEleicaoPrefeito()
     Console.WriteLine("Aperte qualquer tecla para continuar");
     Console.ReadKey();
 }
-
-
 
 //----------------------------------------------
 void CadastrarPartido()

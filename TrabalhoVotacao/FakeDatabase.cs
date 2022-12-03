@@ -25,5 +25,7 @@ namespace TrabalhoVotacao
         public List<Vereador> vereadores { get; set; }
         public List<DeputadoEstadual> deputadoEstaduals { get; set; }
         public List<DeputadoFederal> deputadosFederais { get; set; }
+        public List<Presidente> presidentes { get; set; }
+        public List<Governador> governadores { get; set; }
     }
 }
