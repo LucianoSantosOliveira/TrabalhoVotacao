@@ -771,7 +771,11 @@ void CadastrarCandidato()
     linhaHorizontal(50);
 
     Console.WriteLine("1-Prefeito \n" +
-                      "2-Vereador");
+                      "2-Vereador \n" +
+                      "3-Presidente \n" +
+                      "4-Governador \n" +
+                      "5-Deputado Estadual \n" +
+                      "6-Deputado Federal \n");
 
     var op = Console.ReadLine();
 
@@ -783,6 +787,18 @@ void CadastrarCandidato()
         case "2":
             CadatrarVereador();
             break;
+        case "3":
+            CadastrarPresidente();
+            break;
+        case "4":
+            //CadastrarGovernador();
+            break;
+        case "5":
+            //CadastrarDeputadoEstadual();
+            break;
+        case "6":
+            //CadastrarDeputadoFederal();
+            break;
         default:
             main(null);
             break;
@@ -792,6 +808,48 @@ void CadastrarCandidato()
 
     main(null);
 }
+
+
+
+void CadastrarPresidente()
+{
+    var presidente = new Presidente();
+    Console.Clear();
+    linhaHorizontal(50);
+    Console.WriteLine("Digite o nome do Candidato:");
+    var nome = Console.ReadLine();
+    presidente.nome = string.IsNullOrEmpty(nome) ? "" : nome;
+
+    Console.Clear();
+    Console.Write("Selecione qual partido esse candidato pertence: \n \n");
+
+    foreach (var partido in fakeDataBase.partidos)
+    {
+        var dadosPartido = $"Nome do partido: {partido.Nome} - Numero do partido: {fakeDataBase.partidos.IndexOf(partido)}";
+        Console.WriteLine(dadosPartido);
+    }
+
+    var partidoSelecionado = Console.ReadLine();
+    if (string.IsNullOrEmpty(partidoSelecionado))
+    {
+        main("Obrigatorio selecionar um partido");
+    }
+    else
+    {
+        if (IsNumeric(partidoSelecionado))
+            presidente.PartidoId = fakeDataBase.partidos[Convert.ToInt32(partidoSelecionado)].PartidoId;
+    }
+
+    fakeDataBase.presidentes.Add(presidente);
+}
+
+
+
+
+
+
+
+
 
 void CadatrarVereador()
 {
