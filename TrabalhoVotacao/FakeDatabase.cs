@@ -16,11 +16,14 @@ namespace TrabalhoVotacao
             canditados = new List<Canditado>();
             vereadores = new List<Vereador>();
             prefeitos = new List<Prefeito>();
+            deputadoEstaduals = new List<DeputadoEstadual>();
         }
 
         public List<Partido> partidos { get; set; }
         public List<Canditado> canditados { get; set; }
         public List<Prefeito> prefeitos { get; set; }
         public List<Vereador> vereadores { get; set; }
+        public List<DeputadoEstadual> deputadoEstaduals { get; set; }
+        public List<DeputadoFederal> deputadosFederais { get; set; }
     }
 }

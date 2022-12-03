@@ -12,5 +12,8 @@ namespace TrabalhoVotacao.Models.Partido
 
         public Guid PartidoId { get; set; }
         public string Nome { get; set; }
+        public int VagasObtidas { get; set; }
+        public float mediaSobras { get; set; }
+        public int QuantidadeDeVotos { get; set; }
     }
 }
