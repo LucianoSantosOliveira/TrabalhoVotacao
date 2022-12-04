@@ -61,6 +61,7 @@ void main(string? mensagem)
 
 void ListarCandidatos()
 {
+    //Lista os candidatos cadastrados
     Console.Clear();
     cabecalho("Listar Candidatos", 50);
     if (fakeDataBase.prefeitos.Count() != 0)
@@ -88,6 +89,7 @@ void ListarCandidatos()
 
 void ModuloLegislativo()
 {
+    //Menu de selecionar qual será o tipo de eleição legislativo
     Console.Clear();
     cabecalho("Modulo legislativo", 50);
     Console.WriteLine("1 - Eleições para vereador");
@@ -113,6 +115,7 @@ void ModuloLegislativo()
 
 void ModuloExecutivo()
 {
+    //Menu de selecionar qual será o tipo de eleição executivo
     Console.Clear();
     Console.WriteLine("Modulo Executivo");
     linhaHorizontal(50);
@@ -139,6 +142,7 @@ void ModuloExecutivo()
 
 void InstrucoesArquivoTxt()
 {
+    //Imprimi na tela ao importar o arquivo txt as instruções para importar o arquivo
     Console.Clear();
     Console.ForegroundColor= ConsoleColor.Green;
     Console.WriteLine("Os dados devem ser sepadaros por ';'.\n " +
@@ -152,6 +156,7 @@ void InstrucoesArquivoTxt()
 
 void EleicoesGovernador()
 {
+    //Inicia todo o Fluxo de eleições para governador
     Console.Clear();
     if (fakeDataBase.governadores.Count() == 0)
         main("Deve conter candidatos cadastrados.");
@@ -173,6 +178,7 @@ void EleicoesGovernador()
 
 void LerArquivoTxtGovernador()
 {
+    //Le o arquivo Txt e armazena a quantidade de votos na lista de governadores
     var path = System.AppDomain.CurrentDomain.BaseDirectory.ToString();
     path += @"\eleicao.txt";
     try
@@ -182,6 +188,7 @@ void LerArquivoTxtGovernador()
             String linha;
             while ((linha = sr.ReadLine()) != null)
             {
+                //separa o conteudo da linha por ; e atribui os votos
                 var candidato = linha.Split(';');
                 var nome = candidato[0];
                 var votos = candidato[1];
@@ -200,11 +207,12 @@ void LerArquivoTxtGovernador()
 
 void CalcularResultadoGovernador()
 {
+    //Seleciona todas os votos e soma para saber o total
     var totalDevotos = fakeDataBase.governadores.Select(p => p.QuantidadeDeVotos).Sum();
-
+    //Seleciona todos que tem votos maiores que 0
     var votosValidos = fakeDataBase.governadores.Where(p => p.QuantidadeDeVotos > 0)
                                              .Select(x => x.QuantidadeDeVotos).Sum();
-
+    //calcula a porcentagem para cada governador
     foreach (var prefeito in fakeDataBase.governadores)
     {
         if (prefeito.QuantidadeDeVotos > 0)
@@ -212,9 +220,10 @@ void CalcularResultadoGovernador()
             prefeito.PorcentagemDeVotos = prefeito.QuantidadeDeVotos * 100 / votosValidos;
         }
     }
-
+    //Ordena os governadores pela maior quantidade, o primeiro resultado é o vencedor
     var prefeitosOrdenadosPorVotos = fakeDataBase.governadores.OrderByDescending(p => p.PorcentagemDeVotos);
 
+    //Exibir resultado da eleição
     Console.Clear();
     cabecalho("Resultado da eleição para prefeito", 50);
 
@@ -229,12 +238,14 @@ void CalcularResultadoGovernador()
 
 void EleicoesPresidente()
 {
+    //verifica se tem presidentes cadastrados 
     Console.Clear();
     if (fakeDataBase.presidentes.Count() == 0)
         main("Deve conter candidatos cadastrados.");
     cabecalho("Eleição para prefeito", 50);
     Console.WriteLine("1 - Importar votos por arquivo .txt");
     var opcao = Console.ReadLine();
+    //inicia fluxo de eleição
     switch (opcao)
     {
         case "1":
@@ -250,6 +261,7 @@ void EleicoesPresidente()
 
 void LerArquivoTxtPresidente()
 {
+    //Le todos os dados do arquivo e atribui a quantidade de votos aos presidentes cadastrados
     var path = System.AppDomain.CurrentDomain.BaseDirectory.ToString();
     path += @"\eleicao.txt";
     try
@@ -277,11 +289,12 @@ void LerArquivoTxtPresidente()
 
 void CalcularResultadoPresidente()
 {
+    //Soma todos a quantidade de votos para saber o total
     var totalDevotos = fakeDataBase.presidentes.Select(p => p.QuantidadeDeVotos).Sum();
-
+    //Seleciona so os votos acima de 0
     var votosValidos = fakeDataBase.presidentes.Where(p => p.QuantidadeDeVotos > 0)
                                              .Select(x => x.QuantidadeDeVotos).Sum();
-
+    //Calcula a porcentagem de todos os presidentes
     foreach (var prefeito in fakeDataBase.presidentes)
     {
         if (prefeito.QuantidadeDeVotos > 0)
@@ -289,7 +302,7 @@ void CalcularResultadoPresidente()
             prefeito.PorcentagemDeVotos = prefeito.QuantidadeDeVotos * 100 / votosValidos;
         }
     }
-
+    //Ordena pela maior porcentagem
     var prefeitosOrdenadosPorVotos = fakeDataBase.presidentes.OrderByDescending(p => p.PorcentagemDeVotos);
 
     Console.Clear();

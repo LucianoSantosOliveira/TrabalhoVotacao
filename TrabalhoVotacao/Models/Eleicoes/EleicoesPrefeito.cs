@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace TrabalhoVotacao.Models.Eleicoes
 {
     public class EleicoesPrefeito : Eleicoes
-    {
+    {//gera um Id aleatorio assim que inicia o objeto
         public EleicoesPrefeito() { EleicaoId = Guid.NewGuid(); }
     }
 }
