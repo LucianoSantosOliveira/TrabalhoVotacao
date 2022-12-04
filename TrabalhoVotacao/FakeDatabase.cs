@@ -8,6 +8,7 @@ using TrabalhoVotacao.Models.Partido;
 
 namespace TrabalhoVotacao
 {
+    //Simulador do banco de dados 
     public class FakeDatabase
     {
         public FakeDatabase() 
@@ -23,6 +24,7 @@ namespace TrabalhoVotacao
 
         }
 
+        // Cada lista dessa representa uma tabela no banco
         public List<Partido> partidos { get; set; }
         public List<Canditado> canditados { get; set; }
         public List<Prefeito> prefeitos { get; set; }
