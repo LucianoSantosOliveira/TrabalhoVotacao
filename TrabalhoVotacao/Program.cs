@@ -622,6 +622,7 @@ void CalculaResultadoDeputadoFederal(int quantidadeVagas)
 void LerArquivoTxtPrefeito()
 {
     var path = System.AppDomain.CurrentDomain.BaseDirectory.ToString();
+    //define o nome do arquivo txt
      path += @"\eleicao.txt";
     try
     {
